@@ -33,6 +33,7 @@ cp footer.php /var/www/html/spv/footer.php
 cp index.php /var/www/html/spv/index.php
 cp viewplot.php /var/www/html/spv/viewplot.php
 cp styles.css /var/www/html/spv/styles.css
+cp keepscreenon.mp4 /var/www/html/spv/keepscreenon.mp4
 sudo service apache2 restart
 cd /home/pi
 
