@@ -61,7 +61,7 @@
 		$table.=("<td><input type='datetime-local' name='start1$x' $value1 /></td>\n");
 		$table.=("<td><input type='datetime-local' name='start2$x' $value2 /></td>\n");
 		$table.=("<td><input type='datetime-local' name='start3$x' $value3 /></td>\n");
-		$table.=("<td><a href='viewplot.php?plot=$id'/>View</a></td>\n");
+		$table.=("<td style='text-align:center'><a href='viewplot.php?plot=" . $row['Plot_ID'] . "'/>View</a></td>\n");
 		$table.=("<td><input type='checkbox' name='delete$x' /></td>\n");
 		$table.=("</tr>\n");
 	}

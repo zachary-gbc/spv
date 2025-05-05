@@ -4,9 +4,9 @@
   if(isset($_GET['plot']))
   {
     $getid=$_GET['plot'];
-    $plot="SELECT Plot_Name FROM StagePlots WHERE (Plot_ID='$getid')"; $plotid=""; $name="";
+    $plot="SELECT Plot_ID, Plot_Name FROM StagePlots WHERE (Plot_ID='$getid')"; $plotid=""; $name="";
     if(!$rs=mysqli_query($db,$plot)) { echo("Unable to Run Query: $plot"); exit; }
-    while($row = mysqli_fetch_array($rs)) { $id=$row['Plot_ID']; $name=$row['Plot_Name']; }
+    while($row = mysqli_fetch_array($rs)) { $plotid=$row['Plot_ID']; $name=$row['Plot_Name']; }
   }
   else
   {
@@ -24,7 +24,7 @@
       if($start3 <= time()) { $idarray[$start3]=$id; }
     }
     ksort($idarray);
-    if(count($idarray) > 0) { $plotid=$idarray[0]; $name=$names[$plotid]; }
+    if(count($idarray) > 0) { $plotid=end($idarray); $name=$names[$plotid]; }
   }
 
   echo("<title>$name Stage Plot</title>");
@@ -34,11 +34,11 @@
   if ($plotid != "")
   {
     echo("<div class='viewplotname'><br>$name</div><br>");
-    if(file_exists("files/$id.png")) { echo("<img src='files/$id.png' class='viewplotimage'>"); }
+    if(file_exists("files/$plotid.png")) { echo("<img src='files/$plotid.png' class='viewplotimage'>"); }
     else { echo("<div class='viewplotname'><br><br>No Plot File Available</div><br>"); }
   }
 
   echo("<form action='viewplot.php' style='text-align:center'><input type='submit' value='REFRESH' /></form>");
-  
+  echo("<video width='111' height='1' loop autoplay><source src=keepscreenon.mp4' type='video/mp4'></video>");
   include('footer.php');
 ?>
