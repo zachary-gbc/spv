@@ -23,7 +23,7 @@ sudo mkdir -p /var/www/html/spv/files
 sudo chown www-data:www-data /var/www/html/spv/files
 sudo mysql --user='root' -e "CREATE DATABASE IF NOT EXISTS $dbname"
 
-sudo mysql --user="$dbuser" --password="$dbpass" --database="$dbname" -e "DROP TABLE IF EXISTS Devices;"
+sudo mysql --user="$dbuser" --password="$dbpass" --database="$dbname" -e "DROP TABLE IF EXISTS StagePlots;"
 sudo mysql --user="$dbuser" --password="$dbpass" --database="$dbname" -e "CREATE TABLE StagePlots(Plot_ID INT NOT NULL AUTO_INCREMENT, Plot_Name VARCHAR(255) NOT NULL, Plot_EventDate DATE NULL, Plot_Start1 DATETIME NULL, Plot_Start2 DATETIME NULL, Plot_Start3 DATETIME NULL, PRIMARY KEY(Plot_ID))"
 
 echo "Copy Files to correct folder"
