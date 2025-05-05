@@ -12,7 +12,7 @@ then
 fi
 
 sudo apt-get update
-sudo apt-get install php-gd
+sudo apt-get install php-gd -y
 
 install_log="/home/pi/spv_install.log"
 echo "Initiating Install" > $install_log
@@ -28,6 +28,7 @@ sudo mysql --user="$dbuser" --password="$dbpass" --database="$dbname" -e "CREATE
 
 echo "Copy Files to correct folder"
 
+cd /home/pi/spv
 cp pretitle.php /var/www/html/spv/pretitle.php
 cp posttitle.php /var/www/html/spv/posttitle.php
 cp footer.php /var/www/html/spv/footer.php
