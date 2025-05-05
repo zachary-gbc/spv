@@ -34,8 +34,9 @@ cp posttitle.php /var/www/html/spv/posttitle.php
 cp footer.php /var/www/html/spv/footer.php
 cp index.php /var/www/html/spv/index.php
 cp viewplot.php /var/www/html/spv/viewplot.php
-cp viewplot.php /var/www/html/spv/styles.css
+cp styles.css /var/www/html/spv/styles.css
 sudo service apache2 restart
+cd /home/pi
 
 echo ""
 echo "----------------------"
