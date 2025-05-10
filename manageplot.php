@@ -39,8 +39,15 @@
 			imagedestroy($image);
 		}
 
-    $deleteold="DELETE FROM StagePlots WHERE (Plot_EventDate < NOW() - INTERVAL 3 DAY)";
-    if(!mysqli_query($db,$deleteold)) { echo("Unable to Run Query: $deleteold"); exit; }
+    $deleteold="SELECT Plot_ID FROM StagePlots WHERE (Plot_EventDate < NOW() - INTERVAL 6 DAY)"; $id="";
+		if(!$rs=mysqli_query($db,$deleteold)) { echo("Unable to Run Query: $deleteold"); exit; }
+		while($row = mysqli_fetch_array($rs))
+		{
+			$id=$row['Plot_ID'];
+			unlink("files/$id.png");
+			$delete="DELETE FROM StagePlots WHERE (Plot_ID='$id')"; $id="";
+			if(!mysqli_query($db,$delete)) { echo("Unable to Run Query: $delete"); exit; }
+		}
 	}
 
 	$plots="SELECT Plot_ID, Plot_Name, Plot_EventDate, Plot_Start1, Plot_Start2, Plot_Start3, GREATEST(Plot_Start1, Plot_Start2, Plot_Start3) AS MaxStart FROM StagePlots ORDER BY MaxStart DESC"; $table=""; $x=0;
