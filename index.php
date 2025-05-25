@@ -33,7 +33,7 @@
     if(!$rs=mysqli_query($db,$alllocations)) { echo("Unable to Run Query: $alllocations"); exit; }
     while($row = mysqli_fetch_array($rs))
     { echo("<h1><a href='?location=" . $row['Location_ID'] . "'>" . $row['Location_Name'] . "</a></h1><br>\n"); $haslocation=true; }
-    if($haslocation == false) { echo("<h1>No Locations Available, Please Check Back Later</h1>\n"); }
+    if($haslocation == false) { echo("<h1>No Locations or Plots Available, Please Check Back Later</h1>\n"); }
   }
 
   echo("<title>$name Stage Plot</title>");

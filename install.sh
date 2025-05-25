@@ -25,7 +25,7 @@ sudo mysql --user='root' -e "CREATE DATABASE IF NOT EXISTS $dbname"
 
 sudo mysql --user="$dbuser" --password="$dbpass" --database="$dbname" -e "DROP TABLE IF EXISTS StagePlots;"
 sudo mysql --user="$dbuser" --password="$dbpass" --database="$dbname" -e "DROP TABLE IF EXISTS Locations;"
-sudo mysql --user="$dbuser" --password="$dbpass" --database="$dbname" -e "CREATE TABLE StagePlots(Plot_ID INT NOT NULL AUTO_INCREMENT, Plot_Name VARCHAR(255) NOT NULL, Plot_Location VARCHAR(255) NOT NULL, Plot_EventDate DATE NULL, Plot_Start1 DATETIME NULL, Plot_Start2 DATETIME NULL, Plot_Start3 DATETIME NULL, PRIMARY KEY(Plot_ID))"
+sudo mysql --user="$dbuser" --password="$dbpass" --database="$dbname" -e "CREATE TABLE StagePlots(Plot_ID INT NOT NULL AUTO_INCREMENT, Plot_Name VARCHAR(255) NOT NULL, Plot_Location INT NOT NULL, Plot_EventDate DATE NULL, Plot_Start1 DATETIME NULL, Plot_Start2 DATETIME NULL, Plot_Start3 DATETIME NULL, PRIMARY KEY(Plot_ID))"
 sudo mysql --user="$dbuser" --password="$dbpass" --database="$dbname" -e "CREATE TABLE Locations(Location_ID INT NOT NULL AUTO_INCREMENT,Location_Name VARCHAR(255) NOT NULL UNIQUE, PRIMARY KEY(Location_ID))"
 
 cd /home/pi/spv
