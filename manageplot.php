@@ -51,7 +51,7 @@
 		}
 	}
 
-	$plots="SELECT Plot_ID, Plot_Name, Plot_EventDate, Plot_Start1, Plot_Start2, Plot_Start3, GREATEST(Plot_Start1, Plot_Start2, Plot_Start3) AS MaxStart FROM StagePlots INNER JOIN Locations IN StagePlots.Plot_Location=Locations.Location_ID ORDER BY Plot_Location, MaxStart DESC"; $table=""; $x=0;
+	$plots="SELECT Plot_ID, Plot_Name, Plot_EventDate, Plot_Start1, Plot_Start2, Plot_Start3, Location_Name, GREATEST(Plot_Start1, Plot_Start2, Plot_Start3) AS MaxStart FROM StagePlots INNER JOIN Locations ON StagePlots.Plot_Location=Locations.Location_ID ORDER BY Plot_Location, MaxStart DESC"; $table=""; $x=0;
 	if(!$rs=mysqli_query($db,$plots)) { echo("Unable to Run Query: $plots"); exit; }
 	while($row = mysqli_fetch_array($rs))
 	{
@@ -75,10 +75,10 @@
 		$table.=("</tr>\n");
 	}
 
-	$alllocations="SELECT Location_Name FROM Locations ORDER BY Location_Name"; $locations="";
+	$alllocations="SELECT Location_ID, Location_Name FROM Locations ORDER BY Location_Name"; $locations="";
 	if(!$rs=mysqli_query($db,$alllocations)) { echo("Unable to Run Query: $alllocations"); exit; }
 	while($row = mysqli_fetch_array($rs))
-	{ $locations.=("<option value='" . $row['Location_Name'] . "'>" . $row['Location_Name'] . "</option>"); }
+	{ $locations.=("<option value='" . $row['Location_ID'] . "'>" . $row['Location_Name'] . "</option>"); }
 
 	echo("<form method='post' action='' enctype='multipart/form-data'>\n");
   echo("New Plot Name: <input type='text' name='newplot' />\n<br>");
