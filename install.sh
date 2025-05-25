@@ -29,13 +29,14 @@ sudo mysql --user="$dbuser" --password="$dbpass" --database="$dbname" -e "CREATE
 sudo mysql --user="$dbuser" --password="$dbpass" --database="$dbname" -e "CREATE TABLE Locations(Location_ID INT NOT NULL AUTO_INCREMENT,Location_Name VARCHAR(255) NOT NULL UNIQUE, PRIMARY KEY(Location_ID))"
 
 cd /home/pi/spv
-cp pretitle.php /var/www/html/spv/pretitle.php
-cp posttitle.php /var/www/html/spv/posttitle.php
 cp footer.php /var/www/html/spv/footer.php
 cp index.php /var/www/html/spv/index.php
-cp viewplot.php /var/www/html/spv/viewplot.php
-cp styles.css /var/www/html/spv/styles.css
 cp keepscreenon.mp4 /var/www/html/spv/keepscreenon.mp4
+cp locations.php /var/www/html/spv/locations.php
+cp manageplot.php /var/www/html/spv/manageplot.php
+cp posttitle.php /var/www/html/spv/posttitle.php
+cp pretitle.php /var/www/html/spv/pretitle.php
+cp styles.css /var/www/html/spv/styles.css
 sudo service apache2 restart
 cd /home/pi
 
