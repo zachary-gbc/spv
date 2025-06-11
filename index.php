@@ -10,8 +10,8 @@
   }
   elseif(isset($_GET['location']))
   {
-    $location=$_GET['location'];
-    $plots="SELECT Plot_ID, Plot_Name, Plot_Start1, Plot_Start2, Plot_Start3 FROM StagePlots WHERE (Plot_Location=$location)"; $plotid=""; $name=""; $idarray=array(); $names=array(); 
+    $location=$_GET['location']; $plotid=""; $name=""; $idarray=array(); $names=array(); 
+    $plots="SELECT Plot_ID, Plot_Name, Plot_Start1, Plot_Start2, Plot_Start3 FROM StagePlots WHERE (Plot_Location=$location)";
     if(!$rs=mysqli_query($db,$plots)) { echo("Unable to Run Query: $plots"); exit; }
     while($row = mysqli_fetch_array($rs))
     {
@@ -29,7 +29,7 @@
   }
   else
   {
-    echo("<div style='margin:auto;width:75%;text-align:center'>\n");
+    echo("<div style='margin:auto;width:75%;text-align:center'>\n"); $plotid=""; $name="";
     $alllocations="SELECT Location_ID, Location_Name FROM StagePlots INNER JOIN Locations ON StagePlots.Plot_Location=Locations.Location_ID GROUP BY Plot_Location ORDER BY Location_Name"; $haslocation=false;
     if(!$rs=mysqli_query($db,$alllocations)) { echo("Unable to Run Query: $alllocations"); exit; }
     while($row = mysqli_fetch_array($rs))
@@ -50,6 +50,5 @@
   }
 
   echo("<form action='index.php' style='text-align:center'><input type='submit' value='REFRESH' /></form>");
-  //echo("<video width='111' height='1' loop autoplay><source src=keepscreenon.mp4' type='video/mp4'></video>");
   include('footer.php');
 ?>
