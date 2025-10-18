@@ -51,6 +51,7 @@
 		}
 	}
 
+	$defaultnow=date("Y-n-d\TH:m");
 	$plots="SELECT Plot_ID, Plot_Name, Plot_EventDate, Plot_Start1, Plot_Start2, Plot_Start3, Location_Name, GREATEST(Plot_Start1, Plot_Start2, Plot_Start3) AS MaxStart FROM StagePlots INNER JOIN Locations ON StagePlots.Plot_Location=Locations.Location_ID ORDER BY Plot_Location, MaxStart DESC"; $table=""; $x=0;
 	if(!$rs=mysqli_query($db,$plots)) { echo("Unable to Run Query: $plots"); exit; }
 	while($row = mysqli_fetch_array($rs))
@@ -85,7 +86,7 @@
   echo("For Location: <select name='newlocation' />$locations</select>\n<br>");
   echo("File: <input type='file' name='uploadfile' />\n<br>");
   echo("Event Date: <input type='date' name='neweventdate' />\n<br>");
-  echo("Start 1: <input type='datetime-local' name='newstart1' />\n<br>");
+  echo("Start 1: <input type='datetime-local' name='newstart1' value='$defaultnow' />\n<br>");
   echo("Start 2: <input type='datetime-local' name='newstart2' />\n<br>");
   echo("Start 3: <input type='datetime-local' name='newstart3' />\n<br>");
   if($table != "")
