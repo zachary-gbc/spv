@@ -2,14 +2,14 @@
 <title>Stage Plot Viewer</title>
 <?php include('posttitle.php'); ?>
 
-<div class="header">Stage Plot Viewer</div><br>
-<a href='index.php'>View Next Plot</a>
+<div class="header">Stage Plot Viewer</div>
+<a href='index.php'>View Next Plot</a><br><br>
 <?php
 	if(isset($_POST['submit']))
 	{
 		$x=1;
 		while(isset($_POST["id$x"]))
-    {
+		{
 			$id=str_replace("'","''",$_POST["id$x"]);
 			$name=str_replace("'","''",$_POST["name$x"]);
 			$eventdateinput=strtotime($_POST["eventdate$x"]); $eventdate=date('Y-m-d',$eventdateinput);
@@ -34,13 +34,13 @@
 			$insert="INSERT INTO StagePlots(Plot_Name, Plot_Location, Plot_EventDate, Plot_Start1, Plot_Start2, Plot_Start3) VALUES('$newplot', '$newlocation', '$neweventdate', '$newstart1', '$newstart2', '$newstart3')";
 			if(!mysqli_query($db,$insert)) { echo("Unable to Add New Plot"); exit; }
 
-      $lastid=mysqli_insert_id($db);
+			$lastid=mysqli_insert_id($db);
 			$image=imagecreatefromstring(file_get_contents($_FILES["uploadfile"]["tmp_name"]));
 			imagepng($image,"files/$lastid.png");
 			imagedestroy($image);
 		}
 
-    $deleteold="SELECT Plot_ID FROM StagePlots WHERE (Plot_EventDate < NOW() - INTERVAL 6 DAY)"; $id="";
+		$deleteold="SELECT Plot_ID FROM StagePlots WHERE (Plot_EventDate < NOW() - INTERVAL 6 DAY)"; $id="";
 		if(!$rs=mysqli_query($db,$deleteold)) { echo("Unable to Run Query: $deleteold"); exit; }
 		while($row = mysqli_fetch_array($rs))
 		{
@@ -51,17 +51,17 @@
 		}
 	}
 
-	$defaultnow=date("Y-n-d\TH:m");
+	$defaultnow=date("Y-n-d\TH:m"); $templates="";
 	$plots="SELECT Plot_ID, Plot_Name, Plot_EventDate, Plot_Start1, Plot_Start2, Plot_Start3, Location_Name, GREATEST(Plot_Start1, Plot_Start2, Plot_Start3) AS MaxStart FROM StagePlots INNER JOIN Locations ON StagePlots.Plot_Location=Locations.Location_ID ORDER BY Plot_Location, MaxStart DESC"; $table=""; $x=0;
 	if(!$rs=mysqli_query($db,$plots)) { echo("Unable to Run Query: $plots"); exit; }
 	while($row = mysqli_fetch_array($rs))
 	{
 		if(($x%2) == 0) { $table.=("<tr class='tr_odd'>\n"); } else { $table.=("<tr class='tr_even'>\n"); } $x++;
-    $value1=""; $value2=""; $value3="";
-    if(substr($row['Plot_EventDate'],0,4) != "1969") { $eventvalue="value='" . $row['Plot_EventDate'] . "'"; }
-    if(substr($row['Plot_Start1'],0,4) != "1969") { $value1="value='" . $row['Plot_Start1'] . "'"; }
-    if(substr($row['Plot_Start2'],0,4) != "1969") { $value2="value='" . $row['Plot_Start2'] . "'"; }
-    if(substr($row['Plot_Start3'],0,4) != "1969") { $value3="value='" . $row['Plot_Start3'] . "'"; }
+		$value1=""; $value2=""; $value3="";
+		if(substr($row['Plot_EventDate'],0,4) != "1969") { $eventvalue="value='" . $row['Plot_EventDate'] . "'"; }
+		if(substr($row['Plot_Start1'],0,4) != "1969") { $value1="value='" . $row['Plot_Start1'] . "'"; }
+		if(substr($row['Plot_Start2'],0,4) != "1969") { $value2="value='" . $row['Plot_Start2'] . "'"; }
+		if(substr($row['Plot_Start3'],0,4) != "1969") { $value3="value='" . $row['Plot_Start3'] . "'"; }
 
 
 		$table.=("<th>" . $row['Plot_ID'] . "<input type='hidden' name='id$x' value=\"" . $row['Plot_ID'] . "\" /></th>\n");
@@ -76,27 +76,32 @@
 		$table.=("</tr>\n");
 	}
 
-	$alllocations="SELECT Location_ID, Location_Name FROM Locations ORDER BY Location_Name"; $locations="";
+	$alllocations="SELECT Location_ID, Location_Name, Template_File FROM Locations ORDER BY Location_Name"; $locations="";
 	if(!$rs=mysqli_query($db,$alllocations)) { echo("Unable to Run Query: $alllocations"); exit; }
 	while($row = mysqli_fetch_array($rs))
-	{ $locations.=("<option value='" . $row['Location_ID'] . "'>" . $row['Location_Name'] . "</option>"); }
+	{
+		$locations.=("<option value='" . $row['Location_ID'] . "'>" . $row['Location_Name'] . "</option>");
+		$templates.=("<a href='files/" . $row['Template_File'] . "'>" . $row['Location_Name'] . "</a><br>\n");
+	}
 
 	echo("<form method='post' action='' enctype='multipart/form-data'>\n");
-  echo("New Plot Name: <input type='text' name='newplot' />\n<br>");
-  echo("For Location: <select name='newlocation' />$locations</select>\n<br>");
-  echo("File: <input type='file' name='uploadfile' />\n<br>");
-  echo("Event Date: <input type='date' name='neweventdate' />\n<br>");
-  echo("Start 1: <input type='datetime-local' name='newstart1' value='$defaultnow' />\n<br>");
-  echo("Start 2: <input type='datetime-local' name='newstart2' />\n<br>");
-  echo("Start 3: <input type='datetime-local' name='newstart3' />\n<br>");
-  if($table != "")
-  {
+	echo("New Plot Name: <input type='text' name='newplot' title='Choose a friendly name to show on the top of the page when viewing the plot' /><br>\n");
+	echo("For Location: <select name='newlocation' />$locations</select><br>\n");
+	echo("File: <input type='file' name='uploadfile' title='Upload image (png or jpg recommended), use templates below if needed' /><br>\n");
+	echo("Event Date: <input type='date' name='neweventdate' title='Date event will take place' /><br>\n");
+	echo("Start 1: <input type='datetime-local' name='newstart1' value='$defaultnow' title='When should the plot first be viewable' /><br>\n");
+	echo("Start 2: <input type='datetime-local' name='newstart2' title='Not required, only used for advanced viewing' /><br>\n");
+	echo("Start 3: <input type='datetime-local' name='newstart3' title='Not required, only used for advanced viewing' /><br>\n");
+	if($table != "")
+	{
 		echo("<br><br><table>\n<tr>\n<th>ID</th>\n<th>Location</th>\n<th>Plot Name</th>\n<th>Event Date</th>\n");
 		echo("<th>Start 1</th>\n<th>Start 2</th>\n<th>Start 3</th>\n<th>View Plot</th>\n<th>Delete</th>\n</tr>\n$table</table>\n");
 	}
-  echo("<br><br><input type='submit' name='submit' value='Submit Changes' />\n</form>\n");
+	echo("<br><br><input type='submit' name='submit' value='Submit Changes' />\n</form>\n");
 
-	echo("<br><br><a href='locations.php'>Manage Locations</a>\n");
+	if($templates != "") { echo("<br><br><h3 style='margin:0px'>Download Templates:</h3>$templates"); }
+
+	echo("<br><br><a href='locations.php'>Manage Locations</a>\n<br>");
 ?>
 
 <?php include('footer.php'); ?>
